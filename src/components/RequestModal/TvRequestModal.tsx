@@ -215,6 +215,7 @@ const TvRequestModal = ({
         tvdbId: tvdbId ?? data?.externalIds.tvdbId,
         mediaType: 'tv',
         is4k,
+        ignoreQuota: requestOverrides?.ignoreQuota,
         seasons: settings.currentSettings.partialRequestsEnabled
           ? selectedSeasons.sort((a, b) => a - b)
           : getAllSeasons().filter(
@@ -482,7 +483,7 @@ const TvRequestModal = ({
             : hasPermission(Permission.MANAGE_REQUESTS)
               ? intl.formatMessage(messages.approve)
               : intl.formatMessage(messages.edit)
-          : getAllRequestedSeasons().length >= getAllSeasons().length
+          : unrequestedSeasons.length === 0
             ? intl.formatMessage(messages.alreadyrequested)
             : !settings.currentSettings.partialRequestsEnabled
               ? intl.formatMessage(
@@ -502,9 +503,10 @@ const TvRequestModal = ({
           ? false
           : !settings.currentSettings.partialRequestsEnabled &&
               quota?.tv.limit &&
-              unrequestedSeasons.length > quota.tv.limit
+              unrequestedSeasons.length > quota.tv.limit &&
+              !requestOverrides?.ignoreQuota
             ? true
-            : getAllRequestedSeasons().length >= getAllSeasons().length ||
+            : unrequestedSeasons.length === 0 ||
               (settings.currentSettings.partialRequestsEnabled &&
                 selectedSeasons.length === 0)
       }
@@ -549,12 +551,12 @@ const TvRequestModal = ({
         ) &&
         getAllRequestedSeasons().length < getAllSeasons().length &&
         !editRequest && (
-          <p className="mt-6">
+          <div className="mt-6">
             <Alert
               title={intl.formatMessage(messages.requestadmin)}
               type="info"
             />
-          </p>
+          </div>
         )}
       {(quota?.tv.limit ?? 0) > 0 && (
         <QuotaDisplay
@@ -785,6 +787,7 @@ const TvRequestModal = ({
           isAnime={data?.keywords.some(
             (keyword) => keyword.id === ANIME_KEYWORD_ID
           )}
+          quota={quota}
           onChange={(overrides) => setRequestOverrides(overrides)}
           requestUser={editRequest?.requestedBy}
           defaultOverrides={

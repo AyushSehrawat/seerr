@@ -53,6 +53,7 @@ export interface PublicSettingsResponse {
     tv: string;
     anime: string;
   };
+  versionCheck: boolean;
   plexClientIdentifier: string;
   maxSeasonsPerRequest: number;
 }
@@ -81,7 +82,7 @@ export interface CacheResponse {
 export interface StatusResponse {
   version: string;
   commitTag: string;
-  updateAvailable: boolean;
-  commitsBehind: number;
+  updateAvailable?: boolean;
+  commitsBehind?: number;
   restartRequired: boolean;
 }

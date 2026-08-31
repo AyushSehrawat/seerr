@@ -158,6 +158,7 @@ export interface MainSettings {
   locale: string;
   youtubeUrl: string;
   maxSeasonsPerRequest: number;
+  versionCheck: boolean;
 }
 
 export interface ProxySettings {
@@ -218,6 +219,7 @@ interface FullPublicSettings extends PublicSettings {
   newPlexLogin: boolean;
   youtubeUrl: string;
   metadataSettings: MetadataSettings;
+  versionCheck: boolean;
   plexClientIdentifier: string;
   maxSeasonsPerRequest: number;
 }
@@ -234,6 +236,7 @@ export interface NotificationAgentDiscord extends NotificationAgentConfig {
     botAvatarUrl?: string;
     webhookUrl: string;
     webhookRoleId?: string;
+    webhookThreadId?: string;
     enableMentions: boolean;
     locale: AvailableLocale;
     useUserLocale: boolean;
@@ -314,6 +317,7 @@ export interface NotificationAgentNtfy extends NotificationAgentConfig {
   options: {
     url: string;
     topic: string;
+    tags?: string;
     authMethodUsernamePassword?: boolean;
     username?: string;
     password?: string;
@@ -435,6 +439,7 @@ class Settings {
         locale: 'en',
         youtubeUrl: '',
         maxSeasonsPerRequest: 0,
+        versionCheck: true,
       },
       plex: {
         name: '',
@@ -566,6 +571,7 @@ class Settings {
             options: {
               url: '',
               topic: '',
+              tags: '',
               priority: 3,
               locale: 'en',
             },
@@ -742,6 +748,7 @@ class Settings {
       newPlexLogin: this.data.main.newPlexLogin,
       youtubeUrl: this.data.main.youtubeUrl,
       metadataSettings: this.data.metadataSettings,
+      versionCheck: this.data.main.versionCheck,
       plexClientIdentifier: this.data.clientId,
       maxSeasonsPerRequest: this.data.main.maxSeasonsPerRequest,
     };

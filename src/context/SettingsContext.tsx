@@ -36,6 +36,7 @@ const defaultSettings = {
     tv: 'tmdb',
     anime: 'tmdb',
   },
+  versionCheck: true,
   plexClientIdentifier: '',
   maxSeasonsPerRequest: 0,
 };
